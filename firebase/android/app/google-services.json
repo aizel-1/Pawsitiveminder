@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "714628719112",
+    "project_id": "pawisitiveminders",
+    "storage_bucket": "pawisitiveminders.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:714628719112:android:0af42e5c69d568991e67bd",
+        "android_client_info": {
+          "package_name": "com.example.pawsitiveminder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4wf1mCm92s7kFtOGOhRHgfRz0swdkmDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
