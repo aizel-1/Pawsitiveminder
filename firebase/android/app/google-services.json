@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "714628719112",
-    "project_id": "pawisitiveminders",
-    "storage_bucket": "pawisitiveminders.appspot.com"
+    "project_number": "638688852985",
+    "project_id": "testicle-22ac4",
+    "storage_bucket": "testicle-22ac4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:714628719112:android:0af42e5c69d568991e67bd",
+        "mobilesdk_app_id": "1:638688852985:android:976401ccb7ad32c7b1db28",
         "android_client_info": {
-          "package_name": "com.example.pawsitiveminder"
+          "package_name": "com.PawsitiveMinders.firebase"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB4wf1mCm92s7kFtOGOhRHgfRz0swdkmDw"
+          "current_key": "AIzaSyDUnVUSZYNt5YZGE0N4-Z9fWkJ7r1xLf14"
         }
       ],
       "services": {

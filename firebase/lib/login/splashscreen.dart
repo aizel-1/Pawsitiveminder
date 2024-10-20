@@ -9,7 +9,7 @@ class Splashscreen extends StatefulWidget {
   State<Splashscreen> createState() => _SplashscreenState();
 }
 
-class _SplashscreenState extends State<Splashscreen> 
+class _SplashscreenState extends State<Splashscreen>
 with SingleTickerProviderStateMixin{
   @override
   void initState() {
@@ -18,7 +18,7 @@ with SingleTickerProviderStateMixin{
 
     Future.delayed(const Duration(seconds: 3),(){
       Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder:(_) => const login(),
+        builder:(_) =>  const login(),
         ));
     });
     

@@ -1,15 +1,13 @@
 // import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase/login/registeredlogin.dart';
-import 'package:firebase/login/signup.dart';
 import 'package:firebase/login/splashscreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'login/login.dart';
-import 'page/home.dart';
 
 void main() async {
     WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -20,20 +18,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      home: const Splashscreen(),
       
       debugShowCheckedModeBanner: false,
         title: 'Petcare',
         theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 144, 255, 148)),
           useMaterial3: true, fontFamily: 'Poppins'
       ),
-      initialRoute: '/splashscreen',
-      routes: {
-        '/login': (context) => const login(),
-        '/home': (context) => const home(),
-        '/signup': (context) => const Signup(),
-        '/register': (context) =>const register(),
-        '/splashscreen': (context) =>const Splashscreen(),
-      },
+      // initialRoute: '/splashscreen',
+      // routes: {
+      //   '/login': (context) => const login(),
+      //   '/home': (context) =>  Mainpage(),
+      //   '/signup': (context) => const Signup(),
+      //   '/register': (context) =>const register(),
+      //   '/splashscreen': (context) =>const Splashscreen(),
+      // },
     );
   }
 }

@@ -10,11 +10,21 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
-  String? selectedVet;
+
+// StreamBuilder<QuerySnapshot>(
+//   Stream FirebaseFirestore.instance.collection('vets').snapashots(),
+//   Builder: (context,snapshot){
+//     List<DropdownMenu> vets = [];
+//   }
+// );
+
+  String?selectedVet;
   String? selectedService;
   String? selectedPetType;
   String? selectedDay;
   String? selectedTime;
+
+
 
   List<String> availableDays = ['monday', 'wednesday', 'friday'];
   List<String> availableTimes = ['7-9 am', '9-11 am', '1-3 pm'];
@@ -114,7 +124,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       selected: selectedDay == day,
                       onSelected: (bool selected) {
                         setState(() {
-                          selectedDay = selected ? day : null;
+                          selectedDay = selected ? day : day;
                         });
                       },
                     );
@@ -134,7 +144,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       selected: selectedTime == time,
                       onSelected: (bool selected) {
                         setState(() {
-                          selectedTime = selected ? time : null;
+                          selectedTime = selected ? time : time;
                         });
                       },
                     );

@@ -4,24 +4,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:page_transition/page_transition.dart';
 
 class register extends StatefulWidget {
-    const register({super .  key});
-  
+  const register({super.key});
+
   @override
   _registerState createState() => _registerState();
 }
 
 class _registerState extends State<register> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
-    // Dummy authentication logic
-    if (_usernameController.text == 'user' && _passwordController.text == 'password') {
-      Navigator.pushReplacementNamed(context, '/home');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid credentials')));
-    }
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,13 +23,13 @@ class _registerState extends State<register> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Dog and bell image
-                CircleAvatar(
+              CircleAvatar(
                 radius: 80,
                 backgroundColor: Colors.transparent,
                 child: SvgPicture.asset(
                   'assets/icons/logo.svg', // Replace with the path to your logo
-                height: 200,
-              ), // Your dog and bell image
+                  height: 200,
+                ), // Your dog and bell image
               ),
               const SizedBox(height: 20),
 
@@ -57,14 +47,16 @@ class _registerState extends State<register> {
               // "Back to log in" button
               ElevatedButton(
                 onPressed: () {
-                 Navigator.pushReplacement(
+                  Navigator.pushReplacement(
                       context,
                       PageTransition(
                           type: PageTransitionType.fade, child: const login()));
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFD4B094), // Button color (beige)
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  backgroundColor:
+                      const Color(0xFFD4B094), // Button color (beige)
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
