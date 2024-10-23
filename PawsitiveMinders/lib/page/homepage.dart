@@ -1,5 +1,8 @@
 import 'package:firebase/models/AppointmentDetailPage.dart';
+import 'package:firebase/page/user.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required List appointments});
@@ -11,6 +14,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+Future<void> updateDisplayName(String name) async {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (User != true){
+    await user?.updateDisplayName(null);
+    await user?.reload();
+    user = FirebaseAuth.instance.currentUser;
+  }
+}
+  
     final List<Map<String,String>>appointments;
     _HomePageState({required this.appointments});
   int _selectedIndex = 0;
@@ -21,14 +33,12 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
 
-    if (index == 0) {
-      Navigator.pushNamed(context, '/profile');
-    } else if (index == 1) {
-          Navigator.pushNamed(context, '/home');
+    if (index == 1) {
+      Navigator.pushNamed(context, '/home');
+    } else if (index == 0) {
+          Navigator.pushNamed(context, '/profile');
     } else if (index == 2) {
       Navigator.pushNamed(context, '/appointments');
-    }else if (index == 3) {
-      Navigator.pushNamed(context, '/appointents');
     }
   }
 
@@ -39,8 +49,8 @@ class _HomePageState extends State<HomePage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-          accountName: const Text('si mama mo' ,style: TextStyle(color: Color.fromARGB(255, 45, 3, 0))),
-          accountEmail: const Text('mama mo @gmail.com', style: TextStyle(color: Color.fromARGB(255, 45, 3, 0))),
+          accountName: Text(user?.displayName ?? 'no name' ,style: const TextStyle(color: Colors.white,fontSize: 16),),
+          accountEmail:  Text(user?.email ?? 'No Email', style: const TextStyle(color: Colors.white,fontSize: 16)),
           currentAccountPicture: CircleAvatar(
             child: ClipOval(child: Image.asset('images/logo.png')),
           ),
@@ -51,50 +61,52 @@ class _HomePageState extends State<HomePage> {
         ),
           ListTile(
           leading:const Icon(Icons.account_circle),
-          title: const Text('View Profile'),
+          title: const Text('Profile'),
           onTap: () {
             Navigator.pushNamed(context, '/profile');
           },
         ),
                   ListTile(
           leading:const Icon(Icons.pets_rounded),
-          title: const Text('View Pet Profile'),
+          title: const Text('Pet Profile'),
           onTap: () {
             Navigator.pushNamed(context, '/petprofile');
           },
         ),
-          ListTile(
-            leading: const Icon(Icons.home),
-            title: const Text('Home'),
-            onTap: () {
-              Navigator.pushNamed(context, '/home');
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.home),
+          //   title: const Text('Home'),
+          //   onTap: () {
+          //     Navigator.pushNamed(context, '/home');
+          //   },
+          // ),
           ListTile(
             leading: const Icon(Icons.notifications),
-            title: const Text('notifications'),
+            title: const Text('Notifications'),
             onTap: () {
               Navigator.pushNamed(context, '/settings');
             },
           ),
           ListTile(
             leading: const Icon(Icons.settings),
-            title: const Text('settings'),
+            title: const Text('Settings'),
             onTap: () {
               Navigator.pushNamed(context, '/settings');
             },
           ),
-            
+            const SizedBox(
+                  height: 280,
+                ),
           const Divider(),
-          
           ListTile(
-          leading: const Icon(Icons.logout),
-          title: const Text('Sign out'),
-          onTap: () {
-          Navigator.pushNamed(context, '/login');
-          
-        },
-        ),
+            leading: const Icon(Icons.logout),
+            title: const Text('Sign out'),
+            onTap: () {
+            Navigator.pushNamed(context, '/login');
+            
+                    },
+                    ),
+
         ],
       ),
     );
@@ -183,8 +195,8 @@ class _HomePageState extends State<HomePage> {
             label: 'Appointments',
           ),
         ],
-        selectedItemColor: const Color.fromARGB(255, 97, 75, 53),
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: const Color.fromARGB(255, 188, 130, 73),
+        unselectedItemColor: const Color.fromARGB(255, 45, 44, 44),
         onTap: _onItemTapped,
       ),
       

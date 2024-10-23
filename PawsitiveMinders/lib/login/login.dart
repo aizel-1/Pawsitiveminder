@@ -19,7 +19,7 @@ class _loginState extends State<login> {
   bool _isSecurePassword = true;
 
   String? validateEmail(String? email) {
-    RegExp emailRegex = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$ ');
+    RegExp emailRegex = RegExp(r'^[\w\.-]+@[\w-]+\.\w{2,3}(\.\w{2,3})?$');
     final isEmailValid = emailRegex.hasMatch(email ?? '');
     if (email!.isEmpty) {
       return "Enter Email";
@@ -101,6 +101,7 @@ class _loginState extends State<login> {
                     } else if (_passwordController.text.length < 6) {
                       return 'Password Length Should not be less than 6';
                     }
+                    return null;
                   },
                 ),
                 const SizedBox(
