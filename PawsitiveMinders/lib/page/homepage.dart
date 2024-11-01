@@ -73,13 +73,6 @@ Future<void> updateDisplayName(String name) async {
             Navigator.pushNamed(context, '/petprofile');
           },
         ),
-          // ListTile(
-          //   leading: const Icon(Icons.home),
-          //   title: const Text('Home'),
-          //   onTap: () {
-          //     Navigator.pushNamed(context, '/home');
-          //   },
-          // ),
           ListTile(
             leading: const Icon(Icons.notifications),
             title: const Text('Notifications'),
