@@ -1,6 +1,6 @@
 import 'package:firebase/login/ForgotPasswordPage.dart';
 import 'package:firebase/login/signup.dart';
-import 'package:firebase/page/home.dart';
+import 'package:firebase/page/mainpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -29,17 +29,56 @@ class _loginState extends State<login> {
     return null;
   }
 
+  // route() {
+  //   User? user = FirebaseAuth.instance.currentUser;
+  //   var kk = FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(user!.uid)
+  //       .get()
+  //       .then((DocumentSnapshot documentSnapshot) {
+  //     if (documentSnapshot.exists) {
+  //       if (documentSnapshot.get('role') == "Vets") {
+  //         Navigator.pushReplacement(context,
+  //             MaterialPageRoute(builder: (context) => const Vetinterface()));
+  //       }
+  //       else { Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const Mainpage(),
+  //         ),
+  //       );}
+  //     }
+  //   });
+  // }
+  // void signIn(String email,String password)async{
+  //   if (formKey.currentState!.validate()){
+  //     try {
+  //       UserCredential userCredential =
+  //           await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //         email: _emailController.text.trim(),
+  //         password: _passwordController.text.trim(),
+  //       );
+  //       route();
+  //     }on FirebaseAuthException catch(e){
+  //       if(e.code == 'user-not-found'){
+  //         print('No user found for that email.');
+  //       }else if (e.code == 'wrong password'){
+  //         print('Wrong password provided for that user.');
+  //       }
+  //     }
+  //   }
+  // }
+
   final formKey = GlobalKey<FormState>();
   Future signIn(BuildContext context) async {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: _emailController.text.trim(),
             password: _passwordController.text.trim())
-        .then((signIn) {
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (BuildContext context) => const home()));
-    }
-    );
+            .then((signIn) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) => const Mainpage()));
+    });
   }
 
   @override
@@ -96,12 +135,13 @@ class _loginState extends State<login> {
                       ),
                       suffixIcon: togglePassword()),
                   validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'password is required';
+                    if (_passwordController.text.isEmpty) {
+                      return 'Password is Required';
                     } else if (_passwordController.text.length < 6) {
                       return 'Password Length Should not be less than 6';
+                    } else {
+                      return null;
                     }
-                    return null;
                   },
                 ),
                 const SizedBox(

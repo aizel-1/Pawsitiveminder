@@ -57,10 +57,10 @@ with SingleTickerProviderStateMixin{
             color: Colors.white,
             fontSize:32,
             ),
-            )
-          ],
+            ),
+            CircularProgressIndicator(color: Colors.white)
+              ],
         ),
-
       ),
     );
   }

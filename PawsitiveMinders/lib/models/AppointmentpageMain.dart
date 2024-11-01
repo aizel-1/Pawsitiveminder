@@ -6,6 +6,7 @@ class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _AppointmentScreenState createState() => _AppointmentScreenState();
 }
 
@@ -122,9 +123,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     return ChoiceChip(
                       label: Text(day),
                       selected: selectedDay == day,
+                      selectedColor: Colors.brown,
                       onSelected: (bool selected) {
                         setState(() {
-                          selectedDay = selected ? day : day;
+                          selectedDay = selected ? day : null;
                         });
                       },
                     );
@@ -142,9 +144,10 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     return ChoiceChip(
                       label: Text(time),
                       selected: selectedTime == time,
+                      selectedColor: Colors.brown,
                       onSelected: (bool selected) {
                         setState(() {
-                          selectedTime = selected ? time : time;
+                          selectedTime = selected ? time : null;
                         });
                       },
                     );
@@ -172,6 +175,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     });
                     Navigator.pop(context); // Close the bottom sheet
                   },
+
                   child: const Text('Book Now'),
                 ),
               ],
@@ -183,26 +187,31 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   }
 
 
-  void _onItemTapped(int index) {
-    setState(() {
-    });
-  }
+  // void _onItemTapped(int index) {
+  //   setState(() {
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-  title: const Center(
-          child: Text(
-            'Pawsitive',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-      ),
+      
+  //     appBar: AppBar(
+  // title: const Center(
+  //         child: Text(
+  //           'Pawsitive',
+  //           style: TextStyle(
+  //             color: Colors.black,
+  //             fontSize: 18,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //       ),
+  //       actions: const [
+  //         Icon(Icons.pets)
+
+  //       ],
+  //     ),
       body: AppointmentPage(appointments: appointments),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAppointmentForm,

@@ -1,8 +1,8 @@
 import 'package:firebase/login/login.dart';
-import 'package:firebase/models/PetProfilePage.dart';
-import 'package:firebase/models/ProfilePage.dart';
 import 'package:firebase/models/appointmentpagemain.dart';
 import 'package:firebase/page/homepage.dart';
+import 'package:firebase/profile/PetProfilePage.dart';
+import 'package:firebase/profile/profilepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class home extends StatelessWidget {
           initialRoute: '/home',
           routes: <String, WidgetBuilder>{
         
-            '/profile': (context) =>   const ProfilePage(),
+            '/profile': (context) =>   const profilepage(),
             '/home': (context) =>  const HomePage(appointments: [],),
             '/appointments': (context) =>  const AppointmentScreen(),
             '/login': (context) =>  const login(),

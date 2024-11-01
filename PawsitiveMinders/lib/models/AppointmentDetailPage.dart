@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 
 class AppointmentDetailPage extends StatelessWidget {
-  final Map<String, String> appointment;
+  final Map<String, String> appointments;
 
-  const AppointmentDetailPage({super.key, required this.appointment});
+  const AppointmentDetailPage({super.key, required this.appointments});
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +16,15 @@ class AppointmentDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Vet: ${appointment['vet']}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            Text('Vet: ${appointments['vet']}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 16),
-            Text('Service: ${appointment['service']}', style: const TextStyle(fontSize: 18)),
+            Text('Service: ${appointments['service']}', style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 16),
-            Text('Pet: ${appointment['petType']}', style: const TextStyle(fontSize: 18)),
+            Text('Pet: ${appointments['petType']}', style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 16),
-            Text('Day: ${appointment['day']}', style: const TextStyle(fontSize: 18)),
+            Text('Day: ${appointments['day']}', style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 16),
-            Text('Time: ${appointment['time']}', style: const TextStyle(fontSize: 18)),
+            Text('Time: ${appointments['time']}', style: const TextStyle(fontSize: 18)),
           ],
         ),
       ),

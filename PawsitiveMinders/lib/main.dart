@@ -18,12 +18,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const Splashscreen(),
+      // home: const Splashscreen(),
+      home: const  Splashscreen (),
       
       debugShowCheckedModeBanner: false,
         title: 'Petcare',
-        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 144, 255, 148)),
-          useMaterial3: true, fontFamily: 'Poppins'
+        theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 144, 255, 148),),
+          useMaterial3: true, fontFamily: 'Poppins',
       )
     );
   }

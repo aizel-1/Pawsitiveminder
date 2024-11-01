@@ -23,7 +23,7 @@ class AppointmentPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            AppointmentDetailPage(appointment: appointment),
+                            AppointmentDetailPage(appointments: appointment),
                       ),
                     );
                   },
