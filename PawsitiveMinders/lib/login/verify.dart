@@ -21,7 +21,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
     user = auth.currentUser!;
     user.sendEmailVerification();
 
-    timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 3), (timer) {
       checkEmailVerified();
     });
     super.initState();
@@ -36,9 +36,23 @@ class _VerifyScreenState extends State<VerifyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Text(
-              'An email has been sent to ${user.email} please check your email')),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Image.asset('images/doggy.jpg'),
+          const SizedBox(height: 10),
+          const Padding(
+            padding: EdgeInsets.all(10),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Text(
+                  'An email has been sent to ${user.email} please check your email.', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold))
+            ),
+          ),
+        ],
+      ),
     );
   }
 

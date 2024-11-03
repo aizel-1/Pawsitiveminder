@@ -20,6 +20,7 @@ class _SignupState extends State<Signup> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmpasswordController = TextEditingController();
+  bool _isSecurePassword = true;
 
   @override
   void dispose() {
@@ -33,16 +34,26 @@ class _SignupState extends State<Signup> {
 
   Future Signup() async {
     if (passwordConfimred()) {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim())
-          .then((Signup) {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const VerifyScreen()));
-      });
-      addUserDetails(_firstNameController.text.trim(),
-          _lastNameController.text.trim(), _emailController.text.trim());
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim());
+        //     .then((Signup) {
+        //   Navigator.of(context).push(MaterialPageRoute(
+        //       builder: (BuildContext context) => const VerifyScreen()));
+        // });
+        addUserDetails(_firstNameController.text.trim(),
+            _lastNameController.text.trim(), _emailController.text.trim());
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const VerifyScreen(),
+        ));
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('error:${e.toString()}'), backgroundColor: Colors.red,));
+      }
+    } else {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Password do not match'), backgroundColor: Colors.red,) );
     }
   }
 
@@ -79,14 +90,15 @@ class _SignupState extends State<Signup> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Text('Sign Up',style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
                 // Circle Avatar with Cat Illustration
-                CircleAvatar(
-                  radius: 50.0,
-                  backgroundColor: Colors.grey[200],
-                  child: Image.asset(
-                    'images/logo.png', // Add your cat icon image to the assets folder
-                  ),
-                ),
+                // CircleAvatar(
+                //   radius: 50.0,
+                //   backgroundColor: Colors.grey[200],
+                //   child: Image.asset(
+                //     'images/logo.png', // Add your cat icon image to the assets folder
+                //   ),
+                // ),
                 const SizedBox(height: 20),
 
                 // Dropdown for selecting user type (Vet/PetOwner)
@@ -149,23 +161,25 @@ class _SignupState extends State<Signup> {
                 // Password Field
                 TextField(
                   controller: _passwordController,
-                  obscureText: true,
+                  obscureText: _isSecurePassword,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
+                    suffixIcon: togglePassword(),
                     labelText: 'Create password',
                   ),
+                  
                 ),
                 const SizedBox(height: 20),
 
                 // Confirm Password Field
                 TextField(
-                  obscureText: true,
+                  obscureText: _isSecurePassword,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
-                    ),
+                    ),suffixIcon: togglePassword(),
                     labelText: 'Confirm password',
                   ),
                 ),
@@ -226,6 +240,19 @@ class _SignupState extends State<Signup> {
           ),
         ),
       ),
+    );
+  }
+    Widget togglePassword() {
+    return IconButton(
+      onPressed: () {
+        setState(() {
+          _isSecurePassword = !_isSecurePassword;
+        });
+      },
+      icon: _isSecurePassword
+          ? const Icon(Icons.visibility)
+          : const Icon(Icons.visibility_off),
+      color: Colors.grey,
     );
   }
 }

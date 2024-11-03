@@ -47,8 +47,17 @@ class _ForgotpasswordpageState extends State<ForgotPasswordPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          const SizedBox(height: 80),
+          Padding(
+            padding:  const EdgeInsets.all(15),
+            child:  CircleAvatar(
+              radius: 50,
+              child: ClipOval(child: Image.asset('images/logo.png')),
+              
+            ),
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 25.0),
             child: Text(
@@ -59,7 +68,7 @@ class _ForgotpasswordpageState extends State<ForgotPasswordPage> {
                 textAlign: TextAlign.center),
           ),
           const SizedBox(
-            height: 10,
+            height: 0,
           ),
           Padding(
             padding: const EdgeInsets.all(25.0),
@@ -80,9 +89,10 @@ class _ForgotpasswordpageState extends State<ForgotPasswordPage> {
           ),
           MaterialButton(
             onPressed: passwordReset,
-            child: const Text('Reset Password'),
             color: Colors.brown,
+            child: const Text('Reset Password'),
           ),
+          
         ],
       ),
     );

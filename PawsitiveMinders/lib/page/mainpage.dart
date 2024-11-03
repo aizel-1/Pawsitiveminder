@@ -74,7 +74,7 @@ child: ListView(
             },
           ),
             const SizedBox(
-                  height: 280,
+                  height: 350,
                 ),
           const Divider(),
           ListTile(

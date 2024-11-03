@@ -44,9 +44,11 @@ with SingleTickerProviderStateMixin{
           end: Alignment.bottomLeft
           )
         ),
+        
         child:const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            SizedBox(height: 220),
             CircleAvatar(
                   radius: 80,
                   backgroundImage: AssetImage('images/logo.png'), // Add your cat image here

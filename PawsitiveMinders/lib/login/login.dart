@@ -70,15 +70,23 @@ class _loginState extends State<login> {
   // }
 
   final formKey = GlobalKey<FormState>();
+
   Future signIn(BuildContext context) async {
+    try {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(
             email: _emailController.text.trim(),
-            password: _passwordController.text.trim())
-            .then((signIn) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => const Mainpage()));
-    });
+            password: _passwordController.text.trim());
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (BuildContext context) => const Mainpage(),
+        ));
+    //         .then((signIn) {
+    //   Navigator.of(context).push(MaterialPageRoute(
+    //       builder: (BuildContext context) => const Mainpage()));
+    // });
+    }catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('error:${e.toString()}'), backgroundColor: Colors.red,));
+    }
   }
 
   @override
@@ -101,12 +109,12 @@ class _loginState extends State<login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Cat Image
-                const CircleAvatar(
-                  radius: 50,
-                  backgroundImage:
-                      AssetImage('images/logo.png'), // Add your cat image here
-                ),
+              const Text('Log Up',style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                // const CircleAvatar(
+                //   radius: 50,
+                //   backgroundImage:
+                //       AssetImage('images/logo.png'), // Add your cat image here
+                // ),
                 const SizedBox(height: 20),
                 // Username Field
                 TextFormField(
