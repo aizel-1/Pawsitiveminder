@@ -1,6 +1,7 @@
 import 'package:firebase/login/login.dart';
 import 'package:firebase/models/appointmentpagemain.dart';
 import 'package:firebase/page/homepage.dart';
+import 'package:firebase/page/settings.dart';
 import 'package:firebase/page/user.dart';
 import 'package:firebase/profile/PetProfilePage.dart';
 import 'package:firebase/profile/profilepage.dart';
@@ -14,79 +15,99 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
-int _currentIndex = 1;
+  bool isSwitched = false;
+  int _currentIndex = 0;
   List<Widget> _pages = [];
 
   @override
   void initState() {
     super.initState();
     _pages = [
-      const profilepage(),
       const HomePage(
         appointments: [],
       ),
       const AppointmentScreen(),
+      const profilepage(),
     ];
   }
-  Drawer _buildDrawer(){
-    return Drawer(
 
-child: ListView(
+  Drawer _buildDrawer() {
+    return Drawer(
+      child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
           UserAccountsDrawerHeader(
-          accountName: Text(user?.displayName ?? 'no name' ,style: const TextStyle(color: Colors.white,fontSize: 16),),
-          accountEmail:  Text(user?.email ?? 'No Email', style: const TextStyle(color: Colors.white,fontSize: 16)),
-          currentAccountPicture: CircleAvatar(
-            child: ClipOval(child: Image.asset('images/logo.png')),
+            accountName: Text(
+              user?.displayName ?? 'no name',
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            accountEmail: Text(user?.email ?? 'No Email',
+                style: const TextStyle(color: Colors.white, fontSize: 16)),
+            currentAccountPicture: CircleAvatar(
+              child: ClipOval(child: Image.asset('images/logo.png')),
+            ),
+            decoration: const BoxDecoration(
+                color: Colors.brown,
+                image: DecorationImage(
+                    image: AssetImage('images/cat-dog.png'),
+                    fit: BoxFit.cover)),
           ),
-          decoration: const BoxDecoration(
-            color: Colors.brown,
-            image: DecorationImage(image: AssetImage('images/cat-dog.png'), fit: BoxFit.cover)
-          ),
-        ),
-        //   ListTile(
-        //   leading:const Icon(Icons.account_circle),
-        //   title: const Text('Profile'),
-        //   onTap: () {
-        //   Navigator.pushNamed(context, '/profile');
-        //   },
-        // ),
-                  ListTile(
-          leading:const Icon(Icons.pets_rounded),
-          title: const Text('Pet Profile'),
-          onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Petprofilepage(name: '', imagePath: '', birthday: '', age: '',)));
-          },
-        ),
+          //   ListTile(
+          //   leading:const Icon(Icons.account_circle),
+          //   title: const Text('Profile'),
+          //   onTap: () {
+          //   Navigator.pushNamed(context, '/profile');
+          //   },
+          // ),
           ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notifications'),
+            leading: const Icon(Icons.pets_rounded),
+            title: const Text('Pet Profile'),
             onTap: () {
-              Navigator.pushNamed(context, '/settings');
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const Petprofilepage(
+                        name: '',
+                        imagePath: '',
+                        birthday: '',
+                        age: '',
+                      )));
             },
+          ),
+          SwitchListTile(
+            title: const Text('Notifications'),
+            value: isSwitched,
+            onChanged: (bool newValue) {
+              setState(() {
+                isSwitched = newValue;
+              });
+            },
+            secondary: const Icon(Icons.notifications),
           ),
           ListTile(
             leading: const Icon(Icons.settings),
             title: const Text('Settings'),
             onTap: () {
-              Navigator.pushNamed(context, '/settings');
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const Settings()));
             },
           ),
-            const SizedBox(
-                  height: 350,
-                ),
+          const SizedBox(
+            height: 350,
+          ),
           const Divider(),
           ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Sign out'),
+            leading: const Icon(
+              Icons.logout,
+              color: Colors.redAccent,
+            ),
+            title: const Text('Sign out',
+                style:
+                    TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const login()));
-            // Navigator.pushNamed(context, '/login');
-            
-                    },
-                    ),
-
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => const login()));
+              // Navigator.pushNamed(context, '/login');
+            },
+          ),
         ],
       ),
     );
@@ -94,10 +115,10 @@ child: ListView(
 
   @override
   Widget build(BuildContext context) {
-      // routes;
+    // routes;
     return Scaffold(
       appBar: AppBar(
-  title: const Center(
+        title: const Center(
           child: Text(
             'Pawsitive',
             style: TextStyle(
@@ -108,30 +129,43 @@ child: ListView(
           ),
         ),
         actions: const [
-        Icon(Icons.pets)
-        ],
+          Opacity(
+          opacity: 0.0,
+          child: Row(
+          children: [Icon(Icons.pets),
+          Icon(Icons.person)],
+          )
+          )
+          ],
       ),
       drawer: _buildDrawer(),
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
       ),
-      
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.brown,
-        unselectedItemColor: Colors.grey,
-        currentIndex: _currentIndex,
-        onTap: (index){
-          setState(() {
-            _currentIndex =index;
-          });
-        },
-        items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Appointment')
-      ]),
+      bottomNavigationBar: Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,
+            selectedItemColor: Colors.brown,
+            unselectedItemColor: Colors.black87,
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_today), label: 'Appointment'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: 'Profile'),
+            ]),
+      ),
     );
   }
 }

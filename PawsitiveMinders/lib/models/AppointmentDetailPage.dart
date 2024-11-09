@@ -22,7 +22,7 @@ class AppointmentDetailPage extends StatelessWidget {
             const SizedBox(height: 16),
             Text('Pet: ${appointments['petType']}', style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 16),
-            Text('Day: ${appointments['day']}', style: const TextStyle(fontSize: 18)),
+            Text('Day: ${appointments['date']}', style: const TextStyle(fontSize: 18)),
             const SizedBox(height: 16),
             Text('Time: ${appointments['time']}', style: const TextStyle(fontSize: 18)),
           ],

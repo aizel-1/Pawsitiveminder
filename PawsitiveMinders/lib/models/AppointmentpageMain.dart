@@ -1,7 +1,6 @@
 import 'package:firebase/models/AppointmentpageSub.dart';
 import 'package:flutter/material.dart';
 
-
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
 
@@ -11,23 +10,29 @@ class AppointmentScreen extends StatefulWidget {
 }
 
 class _AppointmentScreenState extends State<AppointmentScreen> {
+  TextEditingController _dateController = TextEditingController();
 
-// StreamBuilder<QuerySnapshot>(
-//   Stream FirebaseFirestore.instance.collection('vets').snapashots(),
-//   Builder: (context,snapshot){
-//     List<DropdownMenu> vets = [];
-//   }
-// );
+  Future<void> _selecDate() async {
+  DateTime? _picked = await showDatePicker(
+    context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100)
+      );
+      if (_picked != null){
+        setState(() {
+          _dateController.text = _picked.toString().split(" ")[0];
+        }
+        );
+      }
+}
 
-  String?selectedVet;
+  String? selectedVet;
   String? selectedService;
   String? selectedPetType;
-  String? selectedDay;
+  String? selectedDate;
   String? selectedTime;
 
-
-
-  List<String> availableDays = ['monday', 'wednesday', 'friday'];
   List<String> availableTimes = ['7-9 am', '9-11 am', '1-3 pm'];
 
   // Shared List to store appointments
@@ -112,25 +117,40 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Available days',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Wrap(
-                  spacing: 8,
-                  children: availableDays.map((day) {
-                    return ChoiceChip(
-                      label: Text(day),
-                      selected: selectedDay == day,
-                      selectedColor: Colors.brown,
-                      onSelected: (bool selected) {
-                        setState(() {
-                          selectedDay = selected ? day : null;
-                        });
-                      },
-                    );
-                  }).toList(),
+                // const Text(
+                //   'Available days',
+                //   style: TextStyle(fontWeight: FontWeight.bold),
+                // ),
+                // const SizedBox(height: 8),
+                // Wrap(
+                //   spacing: 8,
+                //   children: availableDays.map((day) {
+                //     return ChoiceChip(
+                //       label: Text(day),
+                //       selected: selectedDay == day,
+                //       selectedColor: Colors.brown,
+                //       onSelected: (bool selected) {
+                //         setState(() {
+                //           selectedDay = selected ? day : null;
+                //         });
+                //       },
+                //     );
+                //   }).toList(),
+                // ),
+                TextField(
+                  controller: _dateController,
+                  decoration: const InputDecoration(
+                      labelText: 'chose date',
+                      filled: true,
+                      prefixIcon: Icon(Icons.calendar_today),
+                      enabledBorder:
+                          OutlineInputBorder(borderSide: BorderSide.none),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green))),
+                  readOnly: true,
+                  onTap: (){
+                    _selecDate();
+                  },
                 ),
                 const SizedBox(height: 16),
                 const Text(
@@ -162,7 +182,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                         'vet': selectedVet ?? '',
                         'service': selectedService ?? '',
                         'petType': selectedPetType ?? '',
-                        'day': selectedDay ?? '',
+                        'date': _dateController.text,
                         'time': selectedTime ?? '',
                       });
 
@@ -170,14 +190,15 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                       selectedVet = null;
                       selectedService = null;
                       selectedPetType = null;
-                      selectedDay = null;
+                      selectedDate = null;
                       selectedTime = null;
+                      _dateController.clear();
                     });
                     Navigator.pop(context); // Close the bottom sheet
                   },
-
                   child: const Text('Book Now'),
                 ),
+                const  SizedBox(height: 30)
               ],
             ),
           ),
@@ -185,7 +206,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
       },
     );
   }
-
 
   // void _onItemTapped(int index) {
   //   setState(() {
@@ -195,30 +215,34 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-  //     appBar: AppBar(
-  // title: const Center(
-  //         child: Text(
-  //           'Pawsitive',
-  //           style: TextStyle(
-  //             color: Colors.black,
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //       ),
-  //       actions: const [
-  //         Icon(Icons.pets)
+      //     appBar: AppBar(
+      // title: const Center(
+      //         child: Text(
+      //           'Pawsitive',
+      //           style: TextStyle(
+      //             color: Colors.black,
+      //             fontSize: 18,
+      //             fontWeight: FontWeight.bold,
+      //           ),
+      //         ),
+      //       ),
+      //       actions: const [
+      //         Icon(Icons.pets)
 
-  //       ],
-  //     ),
+      //       ],
+      //     ),
       body: AppointmentPage(appointments: appointments),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAppointmentForm,
-        backgroundColor: Colors.brown,
-        child: const Icon(Icons.add),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(10),
+        child: FloatingActionButton(
+          onPressed: _showAppointmentForm,
+          backgroundColor: Colors.brown,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          child: const Icon(Icons.add),
+        ),
       ),
     );
-      
   }
 }
+

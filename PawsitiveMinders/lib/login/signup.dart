@@ -71,7 +71,7 @@ class _SignupState extends State<Signup> {
   }
 
   bool passwordConfimred() {
-    if (_confirmpasswordController.text.trim() ==
+    if (_confirmpasswordController.text.trim() !=
         _confirmpasswordController.text.trim()) {
       return true;
     } else {

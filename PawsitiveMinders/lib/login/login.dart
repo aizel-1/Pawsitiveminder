@@ -28,7 +28,6 @@ class _loginState extends State<login> {
     }
     return null;
   }
-
   // route() {
   //   User? user = FirebaseAuth.instance.currentUser;
   //   var kk = FirebaseFirestore.instance
@@ -71,21 +70,22 @@ class _loginState extends State<login> {
 
   final formKey = GlobalKey<FormState>();
 
-  Future signIn(BuildContext context) async {
+  void signIn(String email, String password) async {
     try {
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim());
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => const Mainpage(),
-        ));
-    //         .then((signIn) {
-    //   Navigator.of(context).push(MaterialPageRoute(
-    //       builder: (BuildContext context) => const Mainpage()));
-    // });
-    }catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('error:${e.toString()}'), backgroundColor: Colors.red,));
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const Mainpage()));
+      //         .then((signIn) {
+      //   Navigator.of(context).push(MaterialPageRoute(
+      //       builder: (BuildContext context) => const Mainpage()));
+      // });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('error:${e.toString()}'),
+        backgroundColor: Colors.red,
+      ));
     }
   }
 
@@ -109,7 +109,9 @@ class _loginState extends State<login> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-              const Text('Log Up',style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                const Text('Log In',
+                    style:
+                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
                 // const CircleAvatar(
                 //   radius: 50,
                 //   backgroundImage:
@@ -142,15 +144,32 @@ class _loginState extends State<login> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       suffixIcon: togglePassword()),
-                  validator: (value) {
-                    if (_passwordController.text.isEmpty) {
-                      return 'Password is Required';
-                    } else if (_passwordController.text.length < 6) {
-                      return 'Password Length Should not be less than 6';
-                    } else {
-                      return null;
-                    }
-                  },
+                  validator: (val) =>
+                      val!.length < 6 ? 'Required at least 6 chars' : null,
+
+                  //       validator: (value) {
+                  //   if (value == null || value.isEmpty) {
+                  //     return 'Password is Required';
+                  //   } else if (value.length < 6) {
+                  //     return 'Password Length Should not be less than 6';
+                  //   } else {
+                  //     return null; // Password is valid
+                  //   }
+                  // }
+
+                  // validator: (value) {
+                  //   if (_passwordController.text.isEmpty) {
+                  //     return 'Password is Required';
+                  //   } else if (_passwordController.text.length < 6) {
+                  //     return 'Password Length Should not be less than 6';
+                  //   } else if (_passwordController.text.isNotEmpty){
+                  //     return null;
+                  //   }else {
+                  //     return 'Incorrect Password';
+                  //   }
+                  //   //   return 'Password';
+                  //   // }
+                  // },
                 ),
                 const SizedBox(
                   height: 15,
@@ -176,7 +195,6 @@ class _loginState extends State<login> {
                           'forgot password?',
                           style: TextStyle(
                             color: Colors.blue,
-                            fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
@@ -192,7 +210,7 @@ class _loginState extends State<login> {
                   child: GestureDetector(
                     onTap: () {
                       formKey.currentState!.validate();
-                      signIn(context);
+                      signIn(_emailController.text, _passwordController.text);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20),
@@ -202,7 +220,7 @@ class _loginState extends State<login> {
                       ),
                       child: const Center(
                           child: Text(
-                        'Sign In',
+                        'Log In',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
