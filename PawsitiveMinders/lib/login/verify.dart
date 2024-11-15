@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:firebase/login/registeredlogin.dart';
+import 'package:firebase/login/thankyou.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +63,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
       timer.cancel();
       // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const register()));
+          MaterialPageRoute(builder: (context) => const Thankyou()));
     }
   }
 }

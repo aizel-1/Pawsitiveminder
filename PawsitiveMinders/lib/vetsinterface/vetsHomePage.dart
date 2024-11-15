@@ -68,7 +68,9 @@ DateTime selectedDate = DateTime.now();
                 ]),
             child: const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Text('appointment Details')],
+              children: [Text('appointment'),
+              SizedBox(height: 10,
+              )],
             ),
           ),
         ),

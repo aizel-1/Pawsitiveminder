@@ -308,8 +308,9 @@ int style TextAppearance_Compat_Notification_Line2 0x7f0d0004
 int style TextAppearance_Compat_Notification_Time 0x7f0d0005
 int style TextAppearance_Compat_Notification_Title 0x7f0d0006
 int style Theme_Hidden 0x7f0d0007
-int style Widget_Compat_NotificationActionContainer 0x7f0d0008
-int style Widget_Compat_NotificationActionText 0x7f0d0009
+int style Theme_PlayCore_Transparent 0x7f0d0008
+int style Widget_Compat_NotificationActionContainer 0x7f0d0009
+int style Widget_Compat_NotificationActionText 0x7f0d000a
 int[] styleable ActivityFilter { 0x7f030000, 0x7f030001 }
 int styleable ActivityFilter_activityAction 0
 int styleable ActivityFilter_activityName 1

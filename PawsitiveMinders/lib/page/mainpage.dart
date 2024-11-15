@@ -5,6 +5,7 @@ import 'package:firebase/page/settings.dart';
 import 'package:firebase/page/user.dart';
 import 'package:firebase/profile/PetProfilePage.dart';
 import 'package:firebase/profile/profilepage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Mainpage extends StatefulWidget {
@@ -15,6 +16,7 @@ class Mainpage extends StatefulWidget {
 }
 
 class _MainpageState extends State<Mainpage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool isSwitched = false;
   int _currentIndex = 0;
   List<Widget> _pages = [];
@@ -103,6 +105,7 @@ class _MainpageState extends State<Mainpage> {
                 style:
                     TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
             onTap: () {
+              _auth.signOut();
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => const login()));
               // Navigator.pushNamed(context, '/login');
@@ -149,7 +152,7 @@ class _MainpageState extends State<Mainpage> {
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
-            type: BottomNavigationBarType.shifting,
+            type: BottomNavigationBarType.fixed,
             selectedItemColor: Colors.brown,
             unselectedItemColor: Colors.black87,
             currentIndex: _currentIndex,

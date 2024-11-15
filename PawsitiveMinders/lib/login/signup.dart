@@ -1,217 +1,232 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase/login/login.dart';
 import 'package:firebase/login/verify.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({
-    Key? key,
-  }) : super(key: key);
+import 'login.dart';
 
+class signup extends StatefulWidget {
   @override
-  State<Signup> createState() => _SignupState();
+  _Signup1State createState() => _Signup1State();
 }
 
-class _SignupState extends State<Signup> {
-  late String selectedRole;
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmpasswordController = TextEditingController();
-  bool _isSecurePassword = true;
+class _Signup1State extends State<signup> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmpassController = TextEditingController();
+  String _selectedRole = 'Veterinarian';
 
-  @override
-  void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmpasswordController.dispose();
-    super.dispose();
-  }
-
-  Future Signup() async {
-    if (passwordConfimred()) {
-      try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim());
-        //     .then((Signup) {
-        //   Navigator.of(context).push(MaterialPageRoute(
-        //       builder: (BuildContext context) => const VerifyScreen()));
-        // });
-        addUserDetails(_firstNameController.text.trim(),
-            _lastNameController.text.trim(), _emailController.text.trim());
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => const VerifyScreen(),
-        ));
-      } catch (e) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('error:${e.toString()}'), backgroundColor: Colors.red,));
-      }
-    } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Password do not match'), backgroundColor: Colors.red,) );
-    }
-  }
-
-  Future addUserDetails(
-    String firstName,
-    String lastname,
-    String email,
-  ) async {
-    await FirebaseFirestore.instance.collection('users').add({
-      'first name': firstName,
-      'last name': lastname,
-      'email': email,
-      'role': selectedRole,
-    });
-  }
-
-  bool passwordConfimred() {
-    if (_confirmpasswordController.text.trim() !=
-        _confirmpasswordController.text.trim()) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 24),
+          child: Form(
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Sign Up',style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                // Circle Avatar with Cat Illustration
-                // CircleAvatar(
-                //   radius: 50.0,
-                //   backgroundColor: Colors.grey[200],
-                //   child: Image.asset(
-                //     'images/logo.png', // Add your cat icon image to the assets folder
-                //   ),
-                // ),
-                const SizedBox(height: 20),
-
-                // Dropdown for selecting user type (Vet/PetOwner)
+                const Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 40),
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Veterinarian/ PetOwner',
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
                   ),
-                  items: ['Vet', 'PetOwner']
-                      .map((label) => DropdownMenuItem(
-                            value: label,
-                            child: Text(label),
+                  value: _selectedRole,
+                  items: ['Veterinarian', 'PetOwner']
+                      .map((role) => DropdownMenuItem(
+                            value: role,
+                            child: Text(role),
                           ))
                       .toList(),
                   onChanged: (value) {
                     setState(() {
-                      selectedRole = value!; // Store selected value
+                      _selectedRole = value!;
                     });
                   },
-                  hint: const Text('Vet/PetOwner'),
                 ),
-                const SizedBox(height: 20),
-                // firstname Field
-                TextField(
-                  controller: _firstNameController,
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: firstNameController,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Firstname',
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
-                    labelText: 'firstname',
                   ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your first name";
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(height: 20),
-
-                //lastname Field
-                TextField(
-                  controller: _lastNameController,
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: lastNameController,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Lastname',
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
-                    labelText: 'lastname',
                   ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your last name";
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(height: 20),
-
-                // Username Field
-                TextField(
-                  controller: _emailController,
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: emailController,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Email',
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
-                    labelText: 'email',
                   ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter your email";
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(height: 20),
-
-                // Password Field
-                TextField(
-                  controller: _passwordController,
-                  obscureText: _isSecurePassword,
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: passwordController,
+                  obscureText: _isObscure,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Create password',
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
                     ),
-                    suffixIcon: togglePassword(),
-                    labelText: 'Create password',
-                  ),
-                  
-                ),
-                const SizedBox(height: 20),
-
-                // Confirm Password Field
-                TextField(
-                  obscureText: _isSecurePassword,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),suffixIcon: togglePassword(),
-                    labelText: 'Confirm password',
-                  ),
-                ),
-                const SizedBox(height: 20),
-
-                // Sign Up Button
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: GestureDetector(
-                    onTap: Signup,
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.brown,
-                        borderRadius: BorderRadius.circular(15),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isObscure ? Icons.visibility_off : Icons.visibility,
                       ),
-                      child: const Center(
-                        child: Text(
-                          'Sign Up',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
-                        ),
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value!.length < 6) {
+                      return "Password must be at least 6 characters";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: confirmpassController,
+                  obscureText: _isObscure,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    hintText: 'Confirm password',
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isObscure ? Icons.visibility_off : Icons.visibility,
                       ),
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      },
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value != passwordController.text) {
+                      return "Passwords do not match";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      signUp(
+                        emailController.text,
+                        passwordController.text,
+                        _selectedRole,
+                        firstNameController.text,
+                        lastNameController.text,
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.brown[700],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-
-                // Already have account Text
-                Row(
+                const SizedBox(height: 16),
+                    Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
@@ -226,7 +241,7 @@ class _SignupState extends State<Signup> {
                                 builder: (context) => const login()));
                       },
                       child: const Text(
-                        "Login now",
+                        " Login now",
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize: 16,
@@ -242,17 +257,32 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
-    Widget togglePassword() {
-    return IconButton(
-      onPressed: () {
-        setState(() {
-          _isSecurePassword = !_isSecurePassword;
-        });
-      },
-      icon: _isSecurePassword
-          ? const Icon(Icons.visibility)
-          : const Icon(Icons.visibility_off),
-      color: Colors.grey,
-    );
+
+  // This is the original sign-up function you wanted to keep unchanged
+  void signUp(String email, String password, String role, String firstName, String lastName) async {
+    const CircularProgressIndicator();
+    if (_formKey.currentState!.validate()) {
+      await _auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) => {
+                postDetailsToFirestore(email, role, firstName, lastName)
+              })
+          .catchError((e) {});
+    }
+  }
+
+  postDetailsToFirestore(
+      String email, String role, String firstName, String lastName) async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    var user = _auth.currentUser;
+    CollectionReference ref = FirebaseFirestore.instance.collection('users');
+    ref.doc(user!.uid).set({
+      'email': emailController.text,
+      'role': role,
+      'firstName': firstName,
+      'lastName': lastName,
+    });
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const VerifyScreen()));
   }
 }

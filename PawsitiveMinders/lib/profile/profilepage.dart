@@ -1,4 +1,5 @@
 import 'package:firebase/login/login.dart';
+import 'package:firebase/page/settings.dart';
 import 'package:firebase/page/user.dart';
 import 'package:firebase/profile/ProfileMenuWidget.dart';
 import 'package:firebase/profile/UpdateProfileScreen.dart';
@@ -32,6 +33,8 @@ class profilepage extends StatefulWidget {
 }
 
 class _profilepageState extends State<profilepage> {
+  final FirebaseAuth _auth =FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     // ignore: unused_element
@@ -95,10 +98,12 @@ class _profilepageState extends State<profilepage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Updateprofilescreen()));
+                              builder: (context) =>
+                                  const Updateprofilescreen()));
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(239, 236, 177, 120),
+                        backgroundColor:
+                            const Color.fromARGB(239, 236, 177, 120),
                         side: BorderSide.none,
                         shape: const StadiumBorder()),
                     child: const Text(profilepage.tEditProfile,
@@ -111,7 +116,13 @@ class _profilepageState extends State<profilepage> {
                 ProfileMenuWidget(
                     title: "Settings",
                     icon: LineAwesomeIcons.cog_solid,
-                    onPressed: () {}),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const Settings()));
+                    }),
                 ProfileMenuWidget(
                     title: "Add Pets",
                     icon: LineAwesomeIcons.paw_solid,
@@ -124,11 +135,12 @@ class _profilepageState extends State<profilepage> {
                     textColor: Colors.redAccent,
                     endIcon: false,
                     onPressed: () {
+                      _auth.signOut();
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const
-                              login()));
+                              builder: (context) => const login()));
+                              OnInvokeCallback == false;
                     }),
               ],
             ),

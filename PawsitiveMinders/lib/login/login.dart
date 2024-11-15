@@ -1,6 +1,10 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/login/ForgotPasswordPage.dart';
 import 'package:firebase/login/signup.dart';
 import 'package:firebase/page/mainpage.dart';
+import 'package:firebase/vetsinterface/vetinterface.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -28,65 +32,75 @@ class _loginState extends State<login> {
     }
     return null;
   }
-  // route() {
-  //   User? user = FirebaseAuth.instance.currentUser;
-  //   var kk = FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(user!.uid)
-  //       .get()
-  //       .then((DocumentSnapshot documentSnapshot) {
-  //     if (documentSnapshot.exists) {
-  //       if (documentSnapshot.get('role') == "Vets") {
-  //         Navigator.pushReplacement(context,
-  //             MaterialPageRoute(builder: (context) => const Vetinterface()));
-  //       }
-  //       else { Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => const Mainpage(),
-  //         ),
-  //       );}
-  //     }
-  //   });
-  // }
-  // void signIn(String email,String password)async{
-  //   if (formKey.currentState!.validate()){
-  //     try {
-  //       UserCredential userCredential =
-  //           await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //         email: _emailController.text.trim(),
-  //         password: _passwordController.text.trim(),
-  //       );
-  //       route();
-  //     }on FirebaseAuthException catch(e){
-  //       if(e.code == 'user-not-found'){
-  //         print('No user found for that email.');
-  //       }else if (e.code == 'wrong password'){
-  //         print('Wrong password provided for that user.');
-  //       }
-  //     }
-  //   }
-  // }
+
+  Future<void> route() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      try {
+        DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        if (documentSnapshot.exists) {
+          String role = documentSnapshot.get("role");
+
+          if (role == "Veterinarian") {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const Vetinterface()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => const Mainpage()));
+          }
+        }
+      } on FirebaseException catch (e) {
+        // Handle Firestore-specific errors
+        if (e.code == 'unavailable') {
+          _showErrorDialog(
+              'Service Unavailable', 'The Firestore service is temporarily unavailable. Please try again later.');
+        } else {
+          _showErrorDialog('Error', 'An error occurred: ${e.message}');
+        }
+      } catch (e) {
+        // Handle any other errors
+        _showErrorDialog('Error', 'An unexpected error occurred: $e');
+      }
+    }
+  }
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   final formKey = GlobalKey<FormState>();
 
   void signIn(String email, String password) async {
+    if (formKey.currentState!.validate()) {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim());
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const Mainpage()));
-      //         .then((signIn) {
-      //   Navigator.of(context).push(MaterialPageRoute(
-      //       builder: (BuildContext context) => const Mainpage()));
-      // });
+          await route();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('error:${e.toString()}'),
         backgroundColor: Colors.red,
       ));
     }
+  }
   }
 
   @override
@@ -111,7 +125,7 @@ class _loginState extends State<login> {
               children: [
                 const Text('Log In',
                     style:
-                        TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 50, fontWeight: FontWeight.bold)),
                 // const CircleAvatar(
                 //   radius: 50,
                 //   backgroundImage:
@@ -172,11 +186,10 @@ class _loginState extends State<login> {
                   // },
                 ),
                 const SizedBox(
-                  height: 15,
+                  height: 14,
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -194,7 +207,7 @@ class _loginState extends State<login> {
                         child: const Text(
                           'forgot password?',
                           style: TextStyle(
-                            color: Colors.blue,
+                            // color: Colors.blue,
                             fontSize: 16,
                           ),
                         ),
@@ -210,7 +223,7 @@ class _loginState extends State<login> {
                   child: GestureDetector(
                     onTap: () {
                       formKey.currentState!.validate();
-                      signIn(_emailController.text, _passwordController.text);
+                      signIn (_emailController.text, _passwordController.text);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20),
@@ -224,7 +237,7 @@ class _loginState extends State<login> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 20,
                         ),
                       )),
                     ),
@@ -245,10 +258,10 @@ class _loginState extends State<login> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const Signup()));
+                                  builder: (context) => signup()));
                         },
                         child: const Text(
-                          "Sign Up",
+                          " Sign Up",
                           style: TextStyle(
                             color: Colors.blue,
                             fontSize: 16,
