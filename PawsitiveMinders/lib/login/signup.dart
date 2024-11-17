@@ -273,7 +273,6 @@ class _Signup1State extends State<signup> {
 
   postDetailsToFirestore(
       String email, String role, String firstName, String lastName) async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref.doc(user!.uid).set({

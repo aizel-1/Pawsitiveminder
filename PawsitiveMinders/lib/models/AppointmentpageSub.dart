@@ -45,15 +45,13 @@ class AppointmentPage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Vet: ${appointment['vet']}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        Text('veterinarian: ${appointment['vet']}', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 4),
                         Text('Service: ${appointment['service']}', style: const TextStyle(fontSize: 16)),
                         const SizedBox(height: 4),
                         Text('Pet: ${appointment['petType']}', style: const TextStyle(fontSize: 16)),
                         const SizedBox(height: 4),
                         Text('Day: ${appointment['date']}', style: const TextStyle(fontSize: 16)),
-                        const SizedBox(height: 4),
-                        Text('Time: ${appointment['time']}', style: const TextStyle(fontSize: 16)),
                       ],
                     ),
                   ),
